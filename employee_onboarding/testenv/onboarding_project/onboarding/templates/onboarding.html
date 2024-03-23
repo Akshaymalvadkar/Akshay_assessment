@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Onboarding</title>
+    <script>
+        function showPopup() {
+            alert("Welcome to the Board");
+        }
+    </script>
+    <style>
+        /* Resetting default margin and padding */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, fieldset, input, textarea, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Setting box-sizing to border-box for all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Container */
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select {
+  appearance: none;
+  padding-right: 30px; /* Adjust to accommodate arrow icon */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path d="M6 9.5l-4-4h8z"/></svg>'); /* Arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+a {
+  display: block;
+  text-align: center;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Employee Onboarding</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ personal_info_form.as_p }}
+        {{ contact_info_form.as_p }}
+        {{ emergency_contact_form.as_p }}
+
+        <label for="roles">Select Role:</label>
+        <select name="roles" id="roles">
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+            <option value="administrator">Administrator</option>
+        </select>
+
+        <button type="submit" onclick="redirectToDashboard()">Submit</button>
+        <a href="{% url 'logout' %}">Logout</a>
+    </form>
+    <script>
+        function redirectToDashboard() {
+            var selectedRole = document.getElementById("roles").value;
+            var redirectUrl = "";
+
+            // Determine the redirect URL based on the selected role
+            switch (selectedRole) {
+                case "employee":
+                    redirectUrl = "{% url 'employee_dashboard' %}";
+                    break;
+                case "manager":
+                    redirectUrl = "{% url 'manager_dashboard' %}";
+                    break;
+                case "administrator":
+                    redirectUrl = "{% url 'admin_dashboard' %}";
+                    break;
+                default:
+                    // Handle invalid selection
+                    break;
+            }
+
+            // Redirect the user to the dashboard page
+            if (redirectUrl !== "") {
+                window.location.href = redirectUrl;
+            }
+        }
+    </script>
+</body>
+</html>
